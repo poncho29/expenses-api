@@ -1,3 +1,4 @@
+import { Boom } from "@hapi/boom";
 import { NextFunction, Request, Response } from "express"
 
 function logErrors (
@@ -22,4 +23,22 @@ function errorHandler (
   });
 }
 
-export { logErrors, errorHandler }
+function boomErrorHandler (
+  error: Boom,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (error.isBoom) {
+    const { output } = error
+    res.status(output.statusCode).json(output.payload)
+  }
+
+  next(error)
+}
+
+export {
+  logErrors,
+  errorHandler,
+  boomErrorHandler
+}

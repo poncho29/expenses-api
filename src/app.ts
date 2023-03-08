@@ -4,7 +4,7 @@ import cors from "cors"
 
 import routerApi from './routes'
 import { initDb } from './db/init'
-import { errorHandler, logErrors } from "./middlewares/errorHandler"
+import { boomErrorHandler, errorHandler, logErrors } from "./middlewares/errorHandler"
 
 const app = express()
 
@@ -20,6 +20,7 @@ routerApi(app)
 
 // Middleware errors
 app.use(logErrors)
+app.use(boomErrorHandler)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 4000

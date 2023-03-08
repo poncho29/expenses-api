@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from "express"
+import boom from "@hapi/boom"
 import User from "../models/user"
-import { handleHttp } from "../utils/error.handle"
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
     if (!id) {
-      // return res.status(400).json({ msg: "id is required" })
-      throw new Error('error')
+      throw boom.notFound('User not found')
     }
 
     const user = await User.findByPk(id);
@@ -18,11 +17,10 @@ const getOne = async (req: Request, res: Response, next: NextFunction) => {
     })
   } catch (error) {
     next(error)
-    // handleHttp(res, 'ERROR_GET_USER')
   }
 }
 
-const getAll = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response, next: NextFunction) => {
   const { limit = 5, offset = 0 } = req.query;
 
   try {
@@ -39,11 +37,11 @@ const getAll = async (req: Request, res: Response) => {
       users
     })
   } catch (error) {
-    handleHttp(res, 'ERROR_GET_USERS')
+    next(error)
   }
 }
 
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { body } = req
 
@@ -53,18 +51,20 @@ const create = async (req: Request, res: Response) => {
       user
     })
   } catch (error) {
-    handleHttp(res, 'ERROR_POST_USER')
+    next(error)
   }
 }
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
     const { body } = req
 
     const user = await User.findByPk(id)
 
-    if (!user) return res.status(400).json({ msg: "User not found" })
+    if (!user) {
+      throw boom.notFound('User not found')
+    }
 
     await user.update(body);
 
@@ -72,17 +72,19 @@ const update = async (req: Request, res: Response) => {
       user
     })
   } catch (error) {
-    handleHttp(res, 'ERROR_PUT_USER')
+    next(error)
   }
 }
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
     const user = await User.findByPk(id)
 
-    if (!user) return res.status(400).json({ msg: "User not found" })
+    if (!user) {
+      throw boom.notFound('User not found')
+    }
 
     await user.destroy()
 
@@ -90,7 +92,7 @@ const remove = async (req: Request, res: Response) => {
       msg: 'User deleted successfully'
     })
   } catch (error) {
-    handleHttp(res, 'ERROR_DELETE_USER')
+    next(error)
   }
 }
 
