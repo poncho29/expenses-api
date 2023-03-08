@@ -1,11 +1,14 @@
-import { Application } from "express"
+import express, { Application } from "express"
 
 import usersRouter from './users'
 import spacesRouter from './spaces'
 
 function routerApi(app: Application) {
-  app.use('/users', usersRouter),
-  app.use('/spaces', spacesRouter)
+  const router = express.Router()
+  app.use('/api/v1', router)
+
+  router.use('/users', usersRouter)
+  router.use('/spaces', spacesRouter)
 }
 
 export default routerApi

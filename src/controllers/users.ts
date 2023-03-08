@@ -1,13 +1,14 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import User from "../models/user"
 import { handleHttp } from "../utils/error.handle"
 
-const getOne = async (req: Request, res: Response) => {
+const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
     if (!id) {
-      return res.status(400).json({ msg: "id is required" })
+      // return res.status(400).json({ msg: "id is required" })
+      throw new Error('error')
     }
 
     const user = await User.findByPk(id);
@@ -16,7 +17,8 @@ const getOne = async (req: Request, res: Response) => {
       user
     })
   } catch (error) {
-    handleHttp(res, 'ERROR_GET_USER')
+    next(error)
+    // handleHttp(res, 'ERROR_GET_USER')
   }
 }
 
@@ -47,7 +49,7 @@ const create = async (req: Request, res: Response) => {
 
     const user = await User.create(body)
 
-    res.json({
+    res.status(201).json({
       user
     })
   } catch (error) {
@@ -62,7 +64,7 @@ const update = async (req: Request, res: Response) => {
 
     const user = await User.findByPk(id)
 
-    if (!user) return res.status(400).json({ msg: "User not foung" })
+    if (!user) return res.status(400).json({ msg: "User not found" })
 
     await user.update(body);
 
