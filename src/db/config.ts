@@ -7,7 +7,8 @@ const DB_PASS = process.env.PASS_DB || '';
 
 const connection = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: 'localhost',
-  dialect: 'mysql'
+  dialect: 'mysql',
+  logging: false
 });
 
 

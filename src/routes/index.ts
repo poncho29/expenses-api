@@ -1,6 +1,6 @@
 import express, { Application } from "express"
 
-import usersRouter from './users'
+import usersRouter from './users.route'
 import spacesRouter from './spaces.route'
 
 function routerApi(app: Application) {

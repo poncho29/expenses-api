@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import boom from "@hapi/boom"
-import User from "../models/user"
+import User from "../models/user.model"
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -45,7 +45,11 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { body } = req
 
-    const user = await User.create(body)
+    const user = await User.findOne({ where: { email: body.email } })
+
+    if (user) throw boom.badRequest('Email is already in use')
+
+    await User.create(body)
 
     res.status(201).json({
       user

@@ -1,7 +1,7 @@
 import { Router} from "express"
 
 import { validatorHandler } from '../middlewares/validatorHandler'
-import {getOne, getAll, create, update,remove} from "../controllers/users"
+import {getOne, getAll, create, update,remove} from "../controllers/users.controller"
 import { getUserSchema, createUserSchema, updateUserSchema } from '../schemas/user.schema'
 
 const router = Router()

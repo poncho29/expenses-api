@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { validatorHandler } from "../middlewares/validatorHandler"
-import { getOne, getAll, create, update, remove } from "../controllers/spaces"
+import { getOne, getAll, create, update, remove } from "../controllers/spaces.controller"
 import { getSpaceSchema, createSpaceSchema, updateSpaceSchema } from "../schemas/space.schema"
 
 const router = Router()
