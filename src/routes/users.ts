@@ -1,18 +1,36 @@
 import { Router} from "express"
-import {
-  getOne,
-  getAll,
-  create,
-  update,
-  remove
-} from "../controllers/users"
+
+import { validatorHandler } from '../middlewares/validatorHandler'
+import {getOne, getAll, create, update,remove} from "../controllers/users"
+import { getUserSchema, createUserSchema, updateUserSchema } from '../schemas/user.schema'
 
 const router = Router()
 
-router.get('/:id', getOne)
+router.get(
+  '/:id',
+  validatorHandler(getUserSchema, 'params'),
+  getOne
+)
+
 router.get('/', getAll)
-router.post('/', create)
-router.put('/:id', update)
-router.delete('/:id', remove)
+
+router.post(
+  '/',
+  validatorHandler(createUserSchema, 'body'),
+  create
+)
+
+router.put(
+  '/:id',
+  validatorHandler(getUserSchema, 'params'),
+  validatorHandler(updateUserSchema, 'body'),
+  update
+)
+
+router.delete(
+  '/:id',
+  validatorHandler(getUserSchema, 'params'),
+  remove
+)
 
 export default router

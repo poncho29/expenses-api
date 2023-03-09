@@ -6,11 +6,11 @@ const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
-    if (!id) {
+    const user = await User.findByPk(id);
+
+    if (!user) {
       throw boom.notFound('User not found')
     }
-
-    const user = await User.findByPk(id);
 
     res.json({
       user
