@@ -32,7 +32,7 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
       })
     ])
 
-    res.status(200).json({
+    res.status(201).json({
       count,
       users
     })
@@ -49,10 +49,10 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
     if (user) throw boom.badRequest('Email is already in use')
 
-    await User.create(body)
+    const newUser = await User.create(body)
 
     res.status(201).json({
-      user
+      newUser
     })
   } catch (error) {
     next(error)
