@@ -1,7 +1,8 @@
-import { DataTypes } from 'sequelize'
-import connection from '../db/config'
+import { DataTypes, Model, Sequelize } from 'sequelize';
 
-const Category = connection.define('Category', {
+const CATEGORY_TABLE = 'Categories'
+
+const CategorySchema = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -23,6 +24,18 @@ const Category = connection.define('Category', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
-})
+}
 
-export default Category
+class Category extends Model {
+  static associate() {}
+
+  static config(sequelize: Sequelize){
+    return {
+      sequelize,
+      tableName: CATEGORY_TABLE,
+      modelName: 'Category'
+    }
+  }
+}
+
+export { Category, CategorySchema, CATEGORY_TABLE };

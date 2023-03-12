@@ -1,7 +1,8 @@
-import { DataTypes } from 'sequelize';
-import connection from '../db/config';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 
-const Space = connection.define('Space', {
+const SPACE_TABLE = 'Spaces'
+
+const SpaceSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -35,6 +36,18 @@ const Space = connection.define('Space', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
-})
+}
 
-export default Space;
+class Space extends Model {
+  static associate() {}
+
+  static config(sequelize: Sequelize){
+    return {
+      sequelize,
+      tableName: SPACE_TABLE,
+      modelName: 'Space'
+    }
+  }
+}
+
+export { Space, SpaceSchema, SPACE_TABLE }

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import boom from "@hapi/boom";
-import Category from "../models/category.model";
 
+import { Category } from "../models/category.model";
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {

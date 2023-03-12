@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import boom from "@hapi/boom";
-import Space from "../models/spaces.model";
+
+import { Space } from "../models/spaces.model";
 
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {

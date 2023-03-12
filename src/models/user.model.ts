@@ -1,7 +1,8 @@
-import { DataTypes } from 'sequelize';
-import connection from '../db/config';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 
-const User = connection.define('User', {
+const USER_TABLE = 'Users'
+
+const UserSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -24,13 +25,29 @@ const User = connection.define('User', {
     type: DataTypes.STRING,
   },
   createdAt: {
+    allowNull: false,
     type: DataTypes.DATE,
+    field: 'create_at',
     defaultValue: DataTypes.NOW
   },
   updatedAt: {
+    allowNull: false,
     type: DataTypes.DATE,
+    field: 'create_at',
     defaultValue: DataTypes.NOW
   }
-})
+}
 
-export default User;
+class User extends Model {
+  static associate() {}
+
+  static config(sequelize: Sequelize){
+    return {
+      sequelize,
+      tableName: USER_TABLE,
+      modelName: 'User'
+    }
+  }
+}
+
+export { User, UserSchema, USER_TABLE };
