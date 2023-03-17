@@ -10,4 +10,4 @@ function setupModels(sequelize: Sequelize) {
   Category.init(CategorySchema, Category.config(sequelize))
 }
 
-export default setupModels
+export { setupModels }

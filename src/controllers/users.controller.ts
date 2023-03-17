@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express"
 import boom from "@hapi/boom"
 
-import { User } from "../models/user.model"
+import { models } from "../db/config"
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
-    const user = await User.findByPk(id);
+    const user = await models.User.findByPk(id);
 
     if (!user) {
       throw boom.notFound('User not found')
@@ -26,8 +26,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const [count, users] = await Promise.all([
-      User.count(),
-      User.findAll({
+      models.User.count(),
+      models.User.findAll({
         limit: Number(limit),
         offset: Number(offset)
       })
@@ -45,12 +45,12 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { body } = req
-
-    const user = await User.findOne({ where: { email: body.email } })
+    console.log(body)
+    const user = await models.User.findOne({ where: { email: body.email } })
 
     if (user) throw boom.badRequest('Email is already in use')
 
-    const newUser = await User.create(body)
+    const newUser = await models.User.create(body)
 
     res.status(201).json({
       newUser
@@ -65,7 +65,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { body } = req
 
-    const user = await User.findByPk(id)
+    const user = await models.User.findByPk(id)
 
     if (!user) {
       throw boom.notFound('User not found')
@@ -85,7 +85,7 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
-    const user = await User.findByPk(id)
+    const user = await models.User.findByPk(id)
 
     if (!user) {
       throw boom.notFound('User not found')

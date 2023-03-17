@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import boom from "@hapi/boom";
 
-import { Space } from "../models/spaces.model";
+import { models } from "../db/config"
 
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
-    const space = await Space.findByPk(id)
+    const space = await models.Space.findByPk(id)
 
     if (!space) throw boom.notFound('Space not found')
 
@@ -25,8 +25,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
     const { limit = 5, offset = 0 } = req.query
 
     const [count, spaces] = await Promise.all([
-      Space.count(),
-      Space.findAll({
+      models.Space.count(),
+      models.Space.findAll({
         limit: Number(limit),
         offset: Number(offset)
       })
@@ -45,7 +45,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { body } = req
 
-    const space = await Space.create(body)
+    const space = await models.Space.create(body)
 
     res.json({
       space
@@ -60,7 +60,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { body } = req
 
-    const space = await Space.findByPk(id)
+    const space = await models.Space.findByPk(id)
 
     if (!space) throw boom.notFound('Space not found')
 
@@ -78,7 +78,7 @@ const remove = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
-    const space = await Space.findByPk(id)
+    const space = await models.Space.findByPk(id)
 
     if (!space) throw boom.notFound('Space not found')
 

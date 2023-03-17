@@ -29,11 +29,15 @@ const SpaceSchema = {
     type: DataTypes.FLOAT
   },
   createdAt: {
+    allowNull: false,
     type: DataTypes.DATE,
+    field: 'created_at',
     defaultValue: DataTypes.NOW
   },
   updatedAt: {
+    allowNull: false,
     type: DataTypes.DATE,
+    field: 'updated_at',
     defaultValue: DataTypes.NOW
   }
 }

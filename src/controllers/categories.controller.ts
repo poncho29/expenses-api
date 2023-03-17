@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import boom from "@hapi/boom";
 
-import { Category } from "../models/category.model";
+import { models } from "../db/config"
 
 const getOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
-    const category = await Category.findByPk(id)
+    const category = await models.Category.findByPk(id)
 
     if (!category) throw boom.notFound('Category not found')
 
@@ -25,8 +25,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
     const { limit = 5, offset = 0 } = req.query;
 
     const [count, categories] = await Promise.all([
-      Category.count(),
-      Category.findAll({
+      models.Category.count(),
+      models.Category.findAll({
         limit: Number(limit),
         offset: Number(offset)
       })
@@ -45,7 +45,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { body } = req
 
-    const category = await Category.create(body)
+    const category = await models.Category.create(body)
 
     res.status(201).json({
       category
@@ -60,7 +60,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const { body } = req
 
-    const category = await Category.findByPk(id)
+    const category = await models.Category.findByPk(id)
 
     if (!category) throw boom.notFound('Category not found')
 
@@ -78,7 +78,7 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params
 
-    const category = await Category.findByPk(id)
+    const category = await models.Category.findByPk(id)
 
     if (!category) throw boom.notFound('User not found')
 
